@@ -1,0 +1,87 @@
+{
+  "project_id": "wuliangye_line_a",
+  "profile_version": 1,
+  "description": "VI Agent development profile for the generated SQLite test database.",
+  "database": {
+    "type": "sqlite",
+    "path": "database/test_vi_agent.db",
+    "readonly": true
+  },
+  "entities": {
+    "inspection_item": {
+      "table": "v_inspection_item_flat",
+      "id": "item_id",
+      "batch_id": "batch_id",
+      "time": "detect_time",
+      "batch_time": "batch_time",
+      "camera_id": "camera_id",
+      "camera_name": "camera_name",
+      "trigger_id": "trigger_id",
+      "product_sn": "product_sn",
+      "is_ok": "is_ok",
+      "defect_code": "result_code",
+      "defect_name": "result_name",
+      "confidence": "confidence",
+      "model_version": "model_version",
+      "image_path": "image_path",
+      "infer_ms": "infer_ms",
+      "trigger_to_image_ms": "trigger_to_image_ms",
+      "receive_to_detect_ms": "receive_to_detect_ms"
+    },
+    "defect_instance": {
+      "table": "v_defect_instance_flat",
+      "id": "defect_id",
+      "item_id": "item_id",
+      "time": "detect_time",
+      "camera_id": "camera_id",
+      "trigger_id": "trigger_id",
+      "defect_code": "defect_code",
+      "defect_name": "defect_name",
+      "confidence": "confidence",
+      "bbox_x": "bbox_x",
+      "bbox_y": "bbox_y",
+      "bbox_w": "bbox_w",
+      "bbox_h": "bbox_h",
+      "area": "area",
+      "severity": "severity",
+      "image_path": "image_path",
+      "model_version": "model_version"
+    },
+    "runtime_event": {
+      "table": "runtime_event",
+      "id": "event_id",
+      "time": "event_time",
+      "trigger_id": "trigger_id",
+      "camera_id": "camera_id",
+      "level": "level",
+      "event_type": "event_type",
+      "source": "source",
+      "message": "message",
+      "duration_ms": "duration_ms",
+      "metadata_json": "metadata_json"
+    }
+  },
+  "defect_dictionary": {
+    "OK": "正常",
+    "HD": "黑点",
+    "ZW": "脏污",
+    "QL": "缺料"
+  },
+  "analysis_defaults": {
+    "time_field": "detect_time",
+    "default_time_range": {
+      "start": "2026-06-14 02:45:00.000",
+      "end": "2026-06-14 03:25:00.000"
+    },
+    "expected_camera_count": 4,
+    "primary_dimensions": ["camera_id", "defect_code", "model_version"]
+  },
+  "thresholds": {
+    "ng_rate_warn": 0.05,
+    "camera_ng_rate_ratio_warn": 2.0,
+    "infer_p95_ms_warn": 850,
+    "confidence_low_warn": 0.45,
+    "continuous_ng_warn": 5
+  }
+}
+
