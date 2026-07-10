@@ -7,5 +7,11 @@
 class MetricsRepository {
 public:
     static bool buildBasicReport(const AgentConfig& config, const QString& userQuestion, QString* outReport, QString* errorMessage);
+    static bool buildBasicReport(
+        const AgentConfig& config,
+        const QString& userQuestion,
+        const QString& requestedStartTime,
+        const QString& requestedEndTime,
+        QString* outReport,
+        QString* errorMessage);
 };
-

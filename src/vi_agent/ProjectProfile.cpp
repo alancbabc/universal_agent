@@ -23,6 +23,12 @@ double readDouble(const QJsonObject& object, const char* key, double fallback)
     return value.isDouble() ? value.toDouble() : fallback;
 }
 
+int readInt(const QJsonObject& object, const char* key, int fallback)
+{
+    const QJsonValue value = object.value(QString::fromLatin1(key));
+    return value.isDouble() ? value.toInt(fallback) : fallback;
+}
+
 bool requireString(const QJsonObject& object, const char* key, QString* outValue, QString* errorMessage)
 {
     const QString value = readString(object, key);
@@ -76,6 +82,7 @@ bool ProjectProfile::loadFromFile(const QString& profilePath, ProjectProfile* ou
 
     const QJsonObject entities = root.value(QStringLiteral("entities")).toObject();
     const QJsonObject item = entities.value(QStringLiteral("inspection_item")).toObject();
+    const QJsonObject defect = entities.value(QStringLiteral("defect_instance")).toObject();
     const QJsonObject event = entities.value(QStringLiteral("runtime_event")).toObject();
 
     if (!requireString(item, "table", &profile.inspectionItem.table, errorMessage)
@@ -89,6 +96,15 @@ bool ProjectProfile::loadFromFile(const QString& profilePath, ProjectProfile* ou
     profile.inspectionItem.cameraName = readString(item, "camera_name");
     profile.inspectionItem.defectName = readString(item, "defect_name");
     profile.inspectionItem.inferMs = readString(item, "infer_ms");
+    profile.inspectionItem.triggerToReceiveMs = readString(item, "trigger_to_receive_ms");
+    profile.inspectionItem.receiveToDetectMs = readString(item, "receive_to_detect_ms");
+    profile.inspectionItem.toDetectToResultMs = readString(item, "to_detect_to_result_ms");
+
+    profile.defectInstance.table = readString(defect, "table");
+    profile.defectInstance.time = readString(defect, "time");
+    profile.defectInstance.cameraId = readString(defect, "camera_id");
+    profile.defectInstance.defectCode = readString(defect, "defect_code");
+    profile.defectInstance.defectName = readString(defect, "defect_name");
 
     if (!requireString(event, "table", &profile.runtimeEvent.table, errorMessage)
         || !requireString(event, "time", &profile.runtimeEvent.time, errorMessage)
@@ -110,8 +126,21 @@ bool ProjectProfile::loadFromFile(const QString& profilePath, ProjectProfile* ou
         thresholds,
         "camera_ng_rate_ratio_warn",
         profile.thresholds.cameraNgRateRatioWarn);
+    profile.thresholds.inferP95MsWarn = readDouble(thresholds, "infer_p95_ms_warn", profile.thresholds.inferP95MsWarn);
+    profile.thresholds.triggerToReceiveP95MsWarn = readDouble(
+        thresholds,
+        "trigger_to_receive_p95_ms_warn",
+        profile.thresholds.triggerToReceiveP95MsWarn);
+    profile.thresholds.receiveToDetectP95MsWarn = readDouble(
+        thresholds,
+        "receive_to_detect_p95_ms_warn",
+        profile.thresholds.receiveToDetectP95MsWarn);
+    profile.thresholds.toDetectToResultP95MsWarn = readDouble(
+        thresholds,
+        "to_detect_to_result_p95_ms_warn",
+        profile.thresholds.toDetectToResultP95MsWarn);
+    profile.thresholds.continuousNgWarn = readInt(thresholds, "continuous_ng_warn", profile.thresholds.continuousNgWarn);
 
     *outProfile = profile;
     return true;
 }
-

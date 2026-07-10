@@ -46,8 +46,8 @@ int main(int argc, char* argv[])
     auto* initJsonEdit = new QTextEdit;
     initJsonEdit->setPlainText(QStringLiteral(R"({
   "project_id": "wuliangye_line_a",
-  "database_path": "database/test_vi_agent.db",
-  "profile_path": "profiles/test_vi_agent_profile.json",
+  "database_path": "database/real_log_vi_agent.db",
+  "profile_path": "profiles/real_log_profile.json",
   "log_paths": ["app_20260613_180017.log"],
   "image_root": "D:/Device/Images",
   "model_endpoint": "https://example.com/v1",
@@ -93,4 +93,3 @@ int main(int argc, char* argv[])
     vi_agent_uninit();
     return result;
 }
-
