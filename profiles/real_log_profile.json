@@ -1,0 +1,106 @@
+{
+  "project_id": "wuliangye_line_a",
+  "profile_version": 2,
+  "description": "Semantic profile for the generated database imported from app_20260613_180017.log.",
+  "database": {
+    "type": "sqlite",
+    "path": "database/real_log_vi_agent.db",
+    "readonly": true,
+    "schema_version": "real_log_v0.2"
+  },
+  "entities": {
+    "inspection_item": {
+      "table": "v_inspection_item_flat",
+      "id": "item_id",
+      "time": "detect_time",
+      "camera_id": "camera_id",
+      "camera_name": "camera_name",
+      "trigger_id": "trigger_id",
+      "material_id": "material_id",
+      "is_ok": "is_ok",
+      "defect_code": "result_code",
+      "defect_name": "result_name",
+      "result_raw": "result_raw",
+      "defect_count": "defect_count",
+      "infer_ms": "infer_ms",
+      "trigger_to_receive_ms": "trigger_to_receive_ms",
+      "receive_to_detect_ms": "receive_to_detect_ms",
+      "to_detect_to_result_ms": "to_detect_to_result_ms",
+      "image_path": "image_path",
+      "model_version": "model_version"
+    },
+    "defect_instance": {
+      "table": "v_defect_instance_flat",
+      "id": "defect_id",
+      "item_id": "item_id",
+      "time": "detect_time",
+      "camera_id": "camera_id",
+      "trigger_id": "trigger_id",
+      "defect_code": "defect_code",
+      "defect_name": "defect_name",
+      "confidence": "confidence",
+      "bbox_x": "bbox_x",
+      "bbox_y": "bbox_y",
+      "bbox_w": "bbox_w",
+      "bbox_h": "bbox_h",
+      "area": "area",
+      "image_path": "image_path",
+      "model_version": "model_version"
+    },
+    "runtime_event": {
+      "table": "v_runtime_event_flat",
+      "id": "event_id",
+      "time": "event_time",
+      "trigger_id": "trigger_id",
+      "camera_id": "camera_id",
+      "level": "level",
+      "event_type": "event_type",
+      "source": "source_symbol",
+      "message": "message"
+    },
+    "equipment_event": {
+      "table": "v_equipment_event_flat",
+      "id": "event_id",
+      "time": "event_time",
+      "category": "event_category",
+      "event_type": "event_type",
+      "message": "message",
+      "trigger_id": "trigger_id",
+      "link_confidence": "link_confidence"
+    },
+    "anomaly_context": {
+      "table": "v_anomaly_context",
+      "time": "detect_time",
+      "camera_id": "camera_id",
+      "trigger_id": "trigger_id",
+      "is_ok": "is_ok",
+      "defect_code": "result_code",
+      "infer_ms": "infer_ms",
+      "trigger_warn_error_count": "trigger_warn_error_count"
+    }
+  },
+  "defect_dictionary": {
+    "OK": "正常",
+    "HD": "黑点",
+    "ZW": "脏污",
+    "QL": "缺料"
+  },
+  "analysis_defaults": {
+    "time_field": "detect_time",
+    "default_time_range": {
+      "start": "2026-06-14 02:45:33.000",
+      "end": "2026-06-14 08:32:18.000"
+    },
+    "expected_camera_count": 4,
+    "primary_dimensions": ["camera_id", "defect_code"]
+  },
+  "thresholds": {
+    "ng_rate_warn": 0.05,
+    "camera_ng_rate_ratio_warn": 1.5,
+    "infer_p95_ms_warn": 850,
+    "trigger_to_receive_p95_ms_warn": 300,
+    "receive_to_detect_p95_ms_warn": 50,
+    "to_detect_to_result_p95_ms_warn": 900,
+    "continuous_ng_warn": 5
+  }
+}
